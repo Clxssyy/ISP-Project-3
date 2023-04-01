@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-image: url(https://images.pexels.com/photos/9665194/pexels-photo-9665194.jpeg?cs=srgb&dl=pexels-cottonbro-9665194.jpg&fm=jpg);
+            background-size: cover;
+            color: white;
+            text-align: center;
+        }
+        table {
+            background-color: white;
+            color: black;
+        }
+        .headers {
+            background-color: rgb(0, 0, 0); 
+            border-radius: 25px; 
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="headers">
+        <h1> A Simple Web Page Creator </h1>
+    </div>
+    <table border="1" style="width:100%">
+        <tr>
+            <th>Item</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Open</td>
+            <td>Open the design window</td>
+            <td><button onclick="openWin()">Open</button></td>
+        </tr>
+        <tr>
+            <td>Title</td>
+            <td>Set the web page title via prompt (Can only be set once & unless undone directly after)</td>
+            <td><button onclick="setTitle()">Set Title</button></td>
+        </tr>
+        <tr>
+            <td>Background Color</td>
+            <td>Set the web page background color using the color picker or enter a color via prompt (ie. red) <input type="color" id="backgroundcolor"></td>
+            <td><button onclick="setBackground()">Set Color</button> <button onclick="setBackgroundText()">Enter Color</button></td>
+        </tr>
+        <tr>
+            <td>Background Image</td>
+            <td>Set the web page background image using an image address. <br> (Works with links that end in .gif or simply copy img address) <br> Fit:
+                <select id="full">
+                <option value="cover">cover</option>
+                <option value="repeat">repeat</option>
+                </select> 
+                Image Address: <input type="text" id="bckimg">
+            </td>
+            <td><button onclick="setBackgroundImage()">Set background image</button></td>
+        </tr>
+        <tr>
+            <td>Text Color</td>
+            <td>Set the web page text color using the color picker or enter a color via prompt (ie. red) <input type="color" id="textcolor"></td>
+            <td><button onclick="setTextColor()">Set Color</button> <button onclick="setTextColorText()">Enter Color</button></td>
+        </tr>
+        <tr>
+            <td>Text Font</td>
+            <td>Set the web page font. Font:
+                <select id="font">
+                    <option value="times">times</option>
+                    <option value="courier">courier</option>
+                    <option value="arial">arial</option>
+                    <option value="serif">serif</option>
+                </select>
+            </td>
+            <td><button onclick="setFont()">Set Font</button></td>
+        </tr>
+        <tr>
+            <td>Margins</td>
+            <td>Set page margins. <br> (Must add px after number unless using % or other values) <br> Top: <input type="text" id="top" value="8px"> Bottom: <input type="text" id="bottom" value="8px"> Left: <input type="text" id="left" value="8px"> Right: <input type="text" id="right" value="8px"></td>
+            <td><button onclick="setMargins()">Set Margins</button></td>
+        </tr>
+        <tr>
+            <td>Header</td>
+            <td>Add a header to your page. <br> Size: <input type="number" id="size" value="1" min="1" max="5"></td>
+            <td><button onclick="addHeader()">Add Header</button></td>
+        </tr>
+        <tr>
+            <td>Text</td>
+            <td>Add text to your page</td>
+            <td><button onclick="addText()">Add Text</button></td>
+        </tr>
+        <tr>
+            <td>Video</td>
+            <td>Add a youtube video to your web page via prompt. (must be an embedded link) <br> Length: <input type="number" id="height" value="320" min="1" max="1000"> Width: <input type="number" id="width" value="160" min="1" max="1000"></td>
+            <td><button onclick="addVideo()">Add Video</button></td>
+        </tr>
+        <tr>
+            <td>Image</td>
+            <td>Add an image to your web page. <br> Image Address: <input type="text" id="imgaddress"></td>
+            <td><button onclick="addImage()">Add Image</button></td>
+        </tr>
+        <tr>
+            <td>Clock</td>
+            <td>Add a clock to web page (Can only be done once unless undone directly)</td>
+            <td><button onclick="addClock()">Add Clock</button></td>
+        </tr>
+        <tr>
+            <td>XML Element</td>
+            <td>Add an XML element to your web page. <br> Element Name: <input type="text" id="elname"> Text: <input type="text" id="eltext"></td>
+            <td><button onclick="addXML()">Add element</button></td>
+        </tr>
+        <tr>
+            <td>Link</td>
+            <td>Add a link to your page. <br> Name: <input type="text" id="lname"> Link: <input type="text" id="link"></td>
+            <td><button onclick="addLink()">Add Link</button></td>
+        </tr>
+        <tr>
+            <td>Other CSS</td>
+            <td>Change styles that are not listed. <br> (Follow similar format to placeholders. Add ; after each style if adding multiple) <br> Element: <input type="text" id="element" placeholder="p"> Style: <input type="text"id="style" placeholder="color: red"></td>
+            <td><button onclick="changeStyle()">Change Style</button></td>
+        </tr>
+        <tr>
+            <td>Examples</td>
+            <td>Add a button to open the example window</td>
+            <td><button onclick="addExamples()">Add</button></td>
+        </tr>
+        <tr>
+            <td>Undo</td>
+            <td>Undo last action</td>
+            <td><button onclick="undoAction()" style="background-color: rgba(255, 238, 0, 0.808)">Undo</button></td>
+        </tr>
+        <tr>
+            <td>Reset</td>
+            <td>Reset the design window (Can't undo this action)</td>
+            <td><button onclick="resetWindow()" style="background-color: rgba(255, 0, 0, 0.808)">Reset</button></td>
+        </tr>
+        <tr>
+            <td>Save</td>
+            <td>Save the design window. <br> PageID: <input type="number" id="saveID" value="1" min="1" max="5"></td>
+            <td><button onclick="savePage()" style="background-color: rgba(60, 255, 0, 0.808)">Save</button></td>
+        </tr>
+        <tr>
+            <td>Load</td>
+            <td>Load a saved window. <br> PageID: <input type="number" id="loadID" value="1" min="1" max="5"></td>
+            <td><button onclick="loadPage()">Load</button></td>
+        </tr>
+        <tr>
+            <td>Close</td>
+            <td>Close the design window</td>
+            <td><button onclick="closeWindow()">Close</button></td>
+        </tr>
+    </table>
+
+    <div class="headers">
+        <h2> Slideshow Workshop </h2>
+        <p style="color: red;">Must complete all steps in order. If you like the default values feel free to skip that step.</p>
+    </div>
+    <table border="1" style="width:100%">
+        <tr>
+            <th>Item</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>Add a unqiue slideshow name. <br> Name: <input type="text" id="ssname"></td>
+            <td><button onclick="setSSName()">Set Name</button></td>
+        </tr>
+        <tr>
+            <td>Dimensions</td>
+            <td>Set image dimensions. <br> Width: <input type="number" id="sswidth" value="200" min="200" max="600"> Height: <input type="number" id="ssheight" value="200" min="200" max="600"></td>
+            <td><button onclick="setSSImgHW()">Set Dimensions</button></td>
+        </tr>
+        <tr>
+            <td>Images</td>
+            <td>Add an image to slideshow. <br> Link: <input type="text" id="img"></td>
+            <td><button onclick="ssAddImg()">Add Image</button></td>
+        </tr>
+        <tr>
+            <td>Time</td>
+            <td>Change the time between image switches. <br> Seconds: <input type="number" id="sstime" value="2" min="1" max="5"></td>
+            <td><button onclick="setSSTime()">Set Time</button></td>
+        </tr>
+        <tr>
+            <td>Submit</td>
+            <td>Add your slideshow to the web page</td>
+            <td><button onclick="addSlideshow()">Add Slideshow</button></td>
+        </tr>
+    </table>
+
+    <button onclick='window.open("http://www.w3schools.com/jsref/obj_window.asp")'>References</button>
+    <button onclick='window.open("http://www.w3schools.com/jsref/met_win_open.asp")'>Examples</button>
+            
+    <script>
+        var page = "<p>ISP PA3</p>";
+        var slideshow = "";
+        var myWindow = null;
+        var myWorkshop = null;
+        var lastAction = "";
+        var ssname = "";
+        var pages = [];
+        var sstime = 2000;
+        var sswidth = 200;
+        var ssheight = 200;
+        
+        function openWin() {
+        if(myWindow != null) myWindow.close();
+            myWindow = window.open("", "ISP PA3", "width=800,height=168");
+            myWindow.document.write(page);
+            }
+
+        function setTitle() {
+            var input = prompt("Enter a title");
+            if (input == null || input == '') { return; };
+            page += '<title>' + input + '</title>';
+            lastAction = '<title>' + input + '</title>';
+        }
+
+        function setBackground() {
+            var color = document.getElementById("backgroundcolor").value;
+            page += "<style>html {background-color:" + color + ";}</style>";
+            lastAction = "<style>html {background-color:" + color + ";}</style>";
+        }
+
+        function setBackgroundImage() {
+            var backgroundImg = document.getElementById("bckimg").value;
+            var full = document.getElementById("full").value;
+            if (backgroundImg == "") { return; }
+            if (full == "cover") { 
+                page += "<style>html {background-image: url(" + backgroundImg + "); background-size: cover;}</style>"; 
+                lastAction += "<style>html {background-image: url(" + backgroundImg + "); background-size: cover;}</style>"; 
+                document.getElementById("bckimg").value = "";
+            }
+            else {
+                page += "<style>html {background-image: url(" + backgroundImg + ");}</style>";
+                lastAction = "<style>html {background-image: url(" + backgroundImg + ");}</style>";
+                document.getElementById("bckimg").value = "";
+            };
+        }
+
+        function setBackgroundText() {
+            var color = prompt("Enter a color");
+            if (color == null || color == '') { return; };
+            page += "<style>html {background-color:" + color + ";}</style>";
+            lastAction = "<style>html {background-color:" + color + ";}</style>";
+        }
+
+        function setTextColor() {
+            var color = document.getElementById("textcolor").value;
+            page += "<style>html {color:" + color + ";}</style>";
+            lastAction = "<style>html {color:" + color + ";}</style>";
+        }
+
+        function setMargins() {
+            var top = document.getElementById("top").value;
+            var bottom = document.getElementById("bottom").value;
+            var left = document.getElementById("left").value;
+            var right = document.getElementById("right").value;
+            page += 
+            `<style> 
+                body {
+                    margin-top:` + top + `;
+                    margin-bottom:` + bottom + `;
+                    margin-left:` + left + `;
+                    margin-right:` + right + `;
+                }
+            </style>`;
+            lastAction = 
+            `<style> 
+                body {
+                    margin-top:` + top + `;
+                    margin-bottom:` + bottom + `;
+                    margin-left:` + left + `;
+                    margin-right:` + right + `;
+                }
+            </style>`;
+            document.getElementById("top").value = "8px";
+            document.getElementById("bottom").value = "8px";
+            document.getElementById("left").value = "8px";
+            document.getElementById("right").value = "8px";
+        }
+
+        function setFont() {
+            var font = document.getElementById("font").value;
+            page += "<style>html {font-family:" + font + ";}</style>";
+            lastAction = "<style>html {font-family:" + font + ";}</style>";
+        }
+
+        function setTextColorText() {
+            var color = prompt("Enter a color");
+            if (color == null || color == '') { return; };
+            page += "<style>html {color:" + color + ";}</style>";
+            lastAction = "<style>html {color:" + color + ";}</style>";
+        }
+
+        function addHeader() {
+            var header = prompt("Enter your header text");
+            if (header == null || header == '') { return; };
+            var size = document.getElementById("size").value;
+            page += "<h" + size + ">" + header + "</h" + size + ">";
+            lastAction = "<h" + size + ">" + header + "</h" + size + ">";
+        }
+
+        function addText() {
+            var text = prompt("Enter your text");
+            if (text == null || text == '') { return; };
+            page += "<p>" + text + "</p>";
+            lastAction = "<p>" + text + "</p>";
+        }
+
+        function addVideo() {
+            var video = prompt("Enter your youtube link (must be an embedded link)");
+            if (video == null || video == '') { return; };
+            var width = document.getElementById("width").value;
+            var height = document.getElementById("height").value;
+            page += "<iframe width='" + width + "' height='" + height + "' src='" + video + "'></iframe>";
+            lastAction = "<iframe width='" + width + "' height='" + height + "' src='" + video + "'></iframe>";
+        }
+
+        function addImage() {
+            var image = document.getElementById("imgaddress").value;
+            if (image == null || image == '') { return; };
+            page += "<img src=" + image + " alt=''>";
+            lastAction = "<img src=" + image + " alt=''>";
+            document.getElementById("imgaddress").value = "";
+        }
+
+        function addClock() {
+            page += "<p>Current Date/Time: <span id='datetime'></span></p>";
+            page += 
+            `<script>
+            function clock()
+            {
+                var date = new Date();
+                document.getElementById("datetime").innerHTML = date;
+
+                setTimeout(clock, 1000)
+            }
+            clock();
+            <\/script>`;
+            lastAction = "<p>Current Date/Time: <span id='datetime'></span></p>";
+        }
+
+        function addLink() {
+            var name = document.getElementById("lname").value;
+            var link = document.getElementById("link").value;
+            page += "<a href='" + link + "'>" + name + "</a>";
+            lastAction = "<a href='" + link + "'>" + name + "</a>";
+            document.getElementById("lname").value = "";
+            document.getElementById("link").value = "";
+        }
+
+        function addXML() {
+            var name = document.getElementById("elname").value;
+            var text = document.getElementById("eltext").value;
+            page += '<' + name + '>' + text + '</' + name + '>';
+            lastAction = '<' + name + '>' + text + '</' + name + '>';
+            document.getElementById("elname").value = "";
+            document.getElementById("eltext").value = "";
+        }
+
+        function changeStyle() {
+            var element = document.getElementById("element").value;
+            var style = document.getElementById("style").value;
+            page += 
+                `<style>
+                    ` + element + `{
+                        ` + style + `
+                    }
+                </style>`;
+                lastAction = 
+                `<style>
+                    ` + element + `{
+                        ` + style + `
+                    }
+                </style>`;
+            lastAction = 
+                `<style>
+                    ` + element + `{
+                        ` + style + `
+                    }
+                </style>`;
+                lastAction = 
+                `<style>
+                    ` + element + `{
+                        ` + style + `
+                    }
+                </style>`;
+            document.getElementById("element").value = "";
+            document.getElementById("style").value = "";
+        }
+        
+        function addButton() {
+            page += "<button>A do nothing button</button>";
+            lastAction = "<button>A do nothing button</button>";
+        }
+
+        function addExamples() {
+            page += "<button onclick='window.open(" + "\"" + "http://www.w3schools.com/jsref/met_win_open.asp" + "\"" + ")'>Examples</button>";
+            lastAction = "<button onclick='window.open(" + "\"" + "http://www.w3schools.com/jsref/met_win_open.asp" + "\"" + ")'>Examples</button>";
+        }
+
+        function undoAction() {
+            page = page.replace(lastAction, "");
+        }
+
+        function resetWindow() {
+            page = "<p>ISP PA3</p>";
+        }
+
+        function savePage() {
+            var saveID = document.getElementById("saveID").value;
+            if (pages[saveID] != null) {
+                var confirm = prompt("Are you sure you want to save over a website? YES or NO");
+                if (confirm == "YES") {
+                    pages[saveID] = page;
+                    document.getElementById("saveID").value = 1;
+                    alert("Save Complete! Page ID: " + saveID);
+                    return;
+                }
+                else {
+                    document.getElementById("saveID").value = 1;
+                    return;
+                }
+            }
+            pages[saveID] = page;
+            document.getElementById("saveID").value = 1;
+            alert("Save Complete! Page ID: " + saveID);
+        }
+
+        function loadPage() {
+            var loadID = document.getElementById("loadID").value;
+            if (pages[loadID] == "" || pages[loadID] == null) { document.getElementById("loadID").value = 1; alert("Load Failed! Page ID: " + loadID + " has nothing saved."); return; }
+            page = pages[loadID];
+            document.getElementById("loadID").value = 1;
+            alert("Load Complete! Page ID: " + loadID);
+        }
+        
+        function closeWindow() {
+            myWindow.close();
+        }
+
+        function setSSImgHW() {
+            ssheight = document.getElementById("ssheight").value;
+            sswidth = document.getElementById("sswidth").value;
+        }
+
+        function ssAddImg() {
+            var img = document.getElementById("img").value;
+            document.getElementById("img").value = "";
+            if (img == null || img == '') { return; }
+            else { slideshow += "<img src=" + img + " alt='' class='" + ssname + "' width='" + sswidth + "' height='" + ssheight + "'>"; }
+        }
+
+        function setSSName() {
+            ssname = document.getElementById("ssname").value;
+            document.getElementById("ssname").value = "";
+        }
+
+        function setSSTime() {
+            sstime = document.getElementById("sstime").value;
+            sstime *= 1000;
+            document.getElementById("sstime").value = 2;
+        }
+
+        function addSlideshow() {
+            page += slideshow;
+            page +=  
+                `<script>
+                    let ` + ssname + `slideIndex = 0;
+                    ` + ssname + `showSlides();
+                    function `+ ssname + `showSlides() {
+                        var ` + ssname + `slides = document.getElementsByClassName("` + ssname + `");
+                        for (i = 0; i < ` + ssname + `slides.length; i++) {
+                            ` + ssname + `slides[i].style.display = "none";
+                        }
+                        ` + ssname + `slideIndex++;
+                        if (` + ssname + `slideIndex > ` + ssname + `slides.length) {` + ssname + `slideIndex = 1}
+                        ` + ssname + `slides[` + ssname + `slideIndex-1].style.display = "block";
+                        setTimeout(` + ssname + `showSlides,` + sstime + `);
+                    }
+                <\/script>`;
+            lastAction = slideshow;
+            slideshow = "";
+            ssname = "";
+            sstime = 2000;
+            document.getElementById("ssheight").value = 200;
+            document.getElementById("sswidth").value = 200;
+        }
+
+        function reference() {
+            window.open("http://www.w3schools.com/jsref/obj_window.asp");
+        }
+        
+        function examples() {
+            window.open("http://www.w3schools.com/jsref/met_win_open.asp");
+        }
+
+    </script>
+
+    <div class="headers">
+        <h2> Features </h2>
+    </div>
+    <table border="1" style="width:100%">
+        <tr>
+            <th>HTML</th>
+            <th>CSS</th>
+            <th>JavaScript</th>
+            <th>XML</th>
+            <th>Others</th>
+        </tr>
+        <tr>
+            <th>Table (table, tr, td)</th> 
+            <th>Background Color</th>
+            <th>Window</th>
+            <th>Elements</th>
+            <th>Slideshow Workshop</th>
+        </tr>
+        <tr>
+            <th>Headers (h1-5)</th>
+            <th>Background Image</th>
+            <th>Event-driven Programming</th>
+            <th>None</th>
+            <th>None</th>
+        </tr>
+        <tr>
+            <th>Links (a)</th>
+            <th>Text Color</th>
+            <th>Clock/Date</th>
+            <th>None</th>
+            <th>None</th>
+        </tr>
+        <tr>
+            <th>Images (img)</th>
+            <th>Text Font</th>
+            <th>Save Web Page Designs</th>
+            <th>None</th>
+            <th>None</th>
+        </tr>
+        <tr>
+            <th>Videos (iframe)</th>
+            <th>Margins</th>
+            <th>Load Web Page Designs</th>
+            <th>None</th>
+            <th>None</th>
+        </tr>
+        <tr>
+            <th>Title (title)</th>
+            <th>General CSS</th>
+            <th>Slideshows</th>
+            <th>None</th>
+            <th>None</th>
+        </tr>
+        <tr>
+            <th>Text (p) </th>
+            <th>None</th>
+            <th>None</th>
+            <th>None</th>
+            <th>None</th>
+        </tr>
+        <tr>
+            <th>Buttons (button)</th>
+            <th>None</th>
+            <th>None</th>
+            <th>None</th>
+            <th>None</th>
+        </tr>
+    </table>
+    <div class="headers">
+        <p>Michael Connolly <br> mpc63@uakron.edu <br> 10/25/2022</p>
+    </div>
+</body>
+</html>
